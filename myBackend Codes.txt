@@ -1,0 +1,181 @@
+{
+  "transactions": [
+    {
+      "email": "delio0781@gmail.com",
+      "telefone": "0786960444",
+      "_id": "f103ee1a-ccdc-49b7-8a26-e170a0b49a61",
+      "_createdDate": "2026-02-03T09:32:04.379Z",
+      "_updatedDate": "2026-02-03T09:32:04.379Z",
+      "country": "Rwanda",
+      "planName": "Basic Plan [M]",
+      "amount": "6240",
+      "payment_method": "MTN+RWANDA",
+      "status": "success",
+      "currency": "RWF",
+      "client_token": "buyerId=1441537e-ef35-4ca8-b9df-6ddbd7b5678c&planId=edbd983f-5ad7-4f9e-aa3e-5573840afcb8&email=delio0781@gmail.com&language=rn&telefone=0786960444&period=4&periodName=Month",
+      "transaction_ref": "2314_1770111059",
+      "period": "4 Month"
+    }
+    
+  ],
+  "moreContactDetails": {
+    "phoneCountryCode": "bbd058bf-d701-4c17-94c1-05ba0d054c19",
+    "loginEmail": "delio0781@gmail.com",
+    "phoneNumber": "786960444",
+    "username": "Muzungu@0791",
+    "_id": "1441537e-ef35-4ca8-b9df-6ddbd7b5678c",
+    "_owner": "62de7563-1aa0-4f4c-8194-abace4a867d8",
+    "_createdDate": "2025-05-08T04:20:47.301Z",
+    "_updatedDate": "2025-05-10T11:56:59.429Z",
+    "lastName": "Admin",
+    "firstName": "Saly",
+    "exists": "yes"
+  },
+  "contactSubscriptions": [
+    {
+      "id": "01052fdd-c0bf-4ed2-a15c-34f42dc96b59",
+      "planId": "05b57aa9-7c73-4374-a021-a3e58e6af614",
+      "subscriptionId": "cf35f0aa-e2b0-4462-a98c-6957b5618da2",
+      "wixPayOrderId": "10fecd4d-ea04-439f-85dd-db6867af9fae",
+      "buyer": {
+        "memberId": "1441537e-ef35-4ca8-b9df-6ddbd7b5678c",
+        "contactId": "1441537e-ef35-4ca8-b9df-6ddbd7b5678c"
+      },
+      "priceDetails": {
+        "subtotal": "1500",
+        "discount": "0",
+        "total": "1500",
+        "planPrice": "1500",
+        "currency": "RWF",
+        "singlePaymentForDuration": {
+          "count": 1,
+          "unit": "MONTH"
+        }
+      },
+      "pricing": {
+        "singlePaymentForDuration": {
+          "count": 1,
+          "unit": "MONTH"
+        },
+        "prices": [
+          {
+            "duration": {
+              "cycleFrom": 1,
+              "numberOfCycles": 1
+            },
+            "price": {
+              "subtotal": "1500",
+              "discount": "0",
+              "total": "1500",
+              "currency": "RWF",
+              "fees": [],
+              "proration": "0"
+            }
+          }
+        ]
+      },
+      "type": "OFFLINE",
+      "orderMethod": "UNKNOWN",
+      "status": "ACTIVE",
+      "lastPaymentStatus": "PAID",
+      "startDate": "2026-02-03T09:32:04.962Z",
+      "endDate": "2030-08-30T21:59:59.999Z",
+      "pausePeriods": [],
+      "earliestEndDate": "2026-03-03T09:32:04.962Z",
+      "currentCycle": {
+        "index": 1,
+        "startedDate": "2026-02-03T09:32:04.962Z",
+        "endedDate": "2030-08-30T21:59:59.999Z"
+      },
+      "cycles": [
+        {
+          "index": 1,
+          "startedDate": "2026-02-03T09:32:04.962Z",
+          "endedDate": "2030-08-30T21:59:59.999Z"
+        }
+      ],
+      "planName": "Basic Pack [M]",
+      "planDescription": "Paid plan",
+      "planPrice": "1500",
+      "createdDate": "2026-02-03T09:32:05.323Z",
+      "updatedDate": "2026-02-03T09:32:07.461Z",
+      "statusNew": "ACTIVE",
+      "onEcom": false,
+      "_id": "01052fdd-c0bf-4ed2-a15c-34f42dc96b59",
+      "_createdDate": "2026-02-03T09:32:05.323Z",
+      "_updatedDate": "2026-02-03T09:32:07.461Z"
+    },
+    {
+      "id": "a7431349-4149-4c38-9cdf-60b776217c4d",
+      "planId": "edbd983f-5ad7-4f9e-aa3e-5573840afcb8",
+      "subscriptionId": "6a0b0047-10ad-449a-b677-6037d18c1034",
+      "wixPayOrderId": "4422613e-d63c-4c21-924f-7d871d4ee98e",
+      "buyer": {
+        "memberId": "1441537e-ef35-4ca8-b9df-6ddbd7b5678c",
+        "contactId": "1441537e-ef35-4ca8-b9df-6ddbd7b5678c"
+      },
+      "priceDetails": {
+        "subtotal": "500",
+        "discount": "0",
+        "total": "500",
+        "planPrice": "500",
+        "currency": "RWF",
+        "singlePaymentForDuration": {
+          "count": 7,
+          "unit": "DAY"
+        }
+      },
+      "pricing": {
+        "singlePaymentForDuration": {
+          "count": 7,
+          "unit": "DAY"
+        },
+        "prices": [
+          {
+            "duration": {
+              "cycleFrom": 1,
+              "numberOfCycles": 1
+            },
+            "price": {
+              "subtotal": "500",
+              "discount": "0",
+              "total": "500",
+              "currency": "RWF",
+              "fees": [],
+              "proration": "0"
+            }
+          }
+        ]
+      },
+      "type": "OFFLINE",
+      "orderMethod": "UNKNOWN",
+      "status": "CANCELED",
+      "cancellation": {
+        "cause": "OWNER_ACTION",
+        "effectiveAt": "IMMEDIATELY"
+      },
+      "lastPaymentStatus": "PAID",
+      "startDate": "2025-05-07T12:14:49.878Z",
+      "endDate": "2025-05-08T02:24:43.401Z",
+      "pausePeriods": [],
+      "earliestEndDate": "2025-05-14T12:14:49.878Z",
+      "cycles": [
+        {
+          "index": 1,
+          "startedDate": "2025-05-07T12:14:49.878Z",
+          "endedDate": "2025-05-08T02:24:43.401Z"
+        }
+      ],
+      "planName": "Basic Pack",
+      "planDescription": "Paid plan",
+      "planPrice": "500",
+      "createdDate": "2025-05-07T12:14:50.431Z",
+      "updatedDate": "2025-05-08T02:24:44.128Z",
+      "statusNew": "CANCELED",
+      "onEcom": false,
+      "_id": "a7431349-4149-4c38-9cdf-60b776217c4d",
+      "_createdDate": "2025-05-07T12:14:50.431Z",
+      "_updatedDate": "2025-05-08T02:24:44.128Z"
+    }
+  ]
+}
