@@ -1,10 +1,10 @@
 // src/App.jsx
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Dashboard from './Pages/Dashboard';
-import Reports from './Pages/Reports';
-import Transactions from './Pages/Transactions';
-import Expenses from './Pages/Expenses';
-import Contacts from './Pages/Contacts';
+import Dashboard from './pages/Dashboard';
+import Reports from './pages/Reports';
+import Transactions from './pages/Transactions';
+import Expenses from './pages/Expenses';
+import Contacts from './pages/Contacts';
 
 function App() {
   return (
