@@ -375,9 +375,9 @@ export default function Reports() {
 
     if (isLoading) {
         return (
-            <div className="min-h-screen bg-[#14181B] pb-20 font-sans flex flex-row">
+            <div className="min-h-screen bg-[#14181B] pb-20 font-sans flex flex-col md:flex-row">
                 <Sidebar fileName={fileName} setShowRateModal={() => {}} setRawData={setRawData} isLoading={loading} />
-                <div className="w-full flex-1 transition-all duration-300 ml-64">
+                <div className="w-full flex-1 transition-all duration-300 md:ml-64">
                     <main className="relative max-w-7xl 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                             {[...Array(4)].map((_, i) => (
@@ -399,7 +399,7 @@ export default function Reports() {
     }
 
     return (
-        <div className="min-h-screen bg-[#14181B] pb-20 font-sans flex flex-row">
+        <div className="min-h-screen bg-[#14181B] pb-20 font-sans flex flex-col md:flex-row">
             {/* Background decoration */}
             <div className="fixed inset-0 overflow-hidden pointer-events-none">
                 <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/5 rounded-full"></div>
@@ -415,7 +415,7 @@ export default function Reports() {
             />
 
             {/* Main Content */}
-            <div className="w-full flex-1 transition-all duration-300 ml-64">
+            <div className="w-full flex-1 transition-all duration-300 md:ml-64">
                 <main className="relative max-w-7xl 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
                     {/* Header */}
                     <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-8">

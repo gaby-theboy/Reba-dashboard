@@ -1,7 +1,7 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import {
-    TrendingUp, Settings, RefreshCcw,
+    TrendingUp, Settings, RefreshCcw, Menu, X,
     Home, BarChart3, Activity, CreditCard, FileText, Users, Receipt
 } from 'lucide-react';
 
@@ -16,7 +16,7 @@ const NAV_ITEMS = [
     { icon: Users, label: 'Contacts', to: '/contacts' },
 ];
 
-const NavItem = React.memo(({ icon: Icon, label, to, disabled }) => {
+const NavItem = React.memo(({ icon: Icon, label, to, disabled, onNavigate }) => {
     if (disabled) {
         return (
             <li>
@@ -33,6 +33,7 @@ const NavItem = React.memo(({ icon: Icon, label, to, disabled }) => {
         <li>
             <NavLink
                 to={to}
+                onClick={onNavigate}
                 className={({ isActive }) =>
                     `flex items-center gap-3 px-4 py-3 rounded-xl transition-all border ${
                         isActive
@@ -51,6 +52,13 @@ const NavItem = React.memo(({ icon: Icon, label, to, disabled }) => {
 NavItem.displayName = 'NavItem';
 
 const Sidebar = React.memo(({ fileName, setShowRateModal, setRawData, isLoading }) => {
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const location = useLocation();
+
+    useEffect(() => {
+        setIsMobileMenuOpen(false);
+    }, [location.pathname]);
+
     const handleOpenRateModal = useCallback(() => {
         setShowRateModal(true);
     }, [setShowRateModal]);
@@ -59,9 +67,12 @@ const Sidebar = React.memo(({ fileName, setShowRateModal, setRawData, isLoading 
         setRawData([]);
     }, [setRawData]);
 
-    return (
-        <div className="fixed inset-y-0 left-0 z-40 w-64 bg-slate-800/95 border-r border-slate-700/50 shadow-xl flex flex-col">
-            {/* Logo & Title */}
+    const closeMobileMenu = useCallback(() => {
+        setIsMobileMenuOpen(false);
+    }, []);
+
+    const renderNavContent = () => (
+        <>
             <div className="p-5 border-b border-slate-700/50">
                 <div className="flex items-center gap-3">
                     <div className="bg-gradient-to-br from-blue-600 to-violet-600 p-2.5 rounded-xl shadow-lg shadow-blue-500/20">
@@ -74,8 +85,7 @@ const Sidebar = React.memo(({ fileName, setShowRateModal, setRawData, isLoading 
                 </div>
             </div>
 
-            {/* Navigation Links */}
-            <nav className="flex-1 p-4">
+            <nav className="flex-1 p-4 overflow-y-auto">
                 <ul className="space-y-1">
                     {NAV_ITEMS.map((item, index) => {
                         if (item.type === 'divider') {
@@ -85,12 +95,11 @@ const Sidebar = React.memo(({ fileName, setShowRateModal, setRawData, isLoading 
                                 </li>
                             );
                         }
-                        return <NavItem key={item.label} {...item} />;
+                        return <NavItem key={item.label} {...item} onNavigate={closeMobileMenu} />;
                     })}
                 </ul>
             </nav>
 
-            {/* File Info and Actions */}
             <div className="p-4 border-t border-slate-700/50">
                 {isLoading ? (
                     <div className="text-sm text-slate-400 flex items-center gap-2 bg-slate-900/50 px-3 py-1.5 rounded-lg border border-slate-700/50 mb-3">
@@ -116,7 +125,38 @@ const Sidebar = React.memo(({ fileName, setShowRateModal, setRawData, isLoading 
                     <RefreshCcw size={16} /> Reload Data
                 </button>
             </div>
-        </div>
+        </>
+    );
+
+    return (
+        <>
+            <button
+                type="button"
+                aria-label="Toggle navigation menu"
+                onClick={() => setIsMobileMenuOpen((open) => !open)}
+                className="md:hidden fixed top-4 left-4 z-50 flex h-11 w-11 items-center justify-center rounded-full border border-slate-700/60 bg-slate-800/90 text-slate-200 shadow-lg backdrop-blur hover:bg-slate-700/90 transition-all"
+            >
+                <span className="flex flex-col items-center justify-center gap-[2px]">
+                    <span className="block h-[2px] w-4 bg-current rounded-full" />
+                    <span className="block h-[2px] w-4 bg-current rounded-full" />
+                    <span className="block h-[2px] w-4 bg-current rounded-full" />
+                </span>
+            </button>
+
+            <div className={`md:hidden fixed inset-0 z-40 transition-all duration-300 ${isMobileMenuOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}>
+                <div
+                    className={`absolute inset-0 bg-slate-950/70 transition-opacity duration-300 ${isMobileMenuOpen ? 'opacity-100' : 'opacity-0'}`}
+                    onClick={closeMobileMenu}
+                />
+                <div className={`absolute left-0 top-0 h-full w-72 bg-slate-800/95 border-r border-slate-700/50 shadow-xl flex flex-col transition-transform duration-300 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+                    {renderNavContent()}
+                </div>
+            </div>
+
+            <div className="hidden md:flex fixed inset-y-0 left-0 z-40 w-64 bg-slate-800/95 border-r border-slate-700/50 shadow-xl flex-col">
+                {renderNavContent()}
+            </div>
+        </>
     );
 });
 

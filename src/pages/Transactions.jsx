@@ -356,7 +356,7 @@ export default function Transactions() {
     };
 
     return (
-        <div className="min-h-screen bg-[#14181B] pb-20 font-sans flex flex-row">
+        <div className="min-h-screen bg-[#14181B] pb-20 font-sans flex flex-col md:flex-row">
             {/* Background decoration */}
             <div className="fixed inset-0 overflow-hidden pointer-events-none">
                 <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/5 rounded-full"></div>
@@ -370,7 +370,7 @@ export default function Transactions() {
                 isLoading={loading}
             />
 
-            <div className={`flex-1 ml-64 transition-all duration-300 ${selectedTransaction ? 'mr-96' : ''} flex flex-col h-screen overflow-hidden`}>
+            <div className={`flex-1 md:ml-64 transition-all duration-300 ${selectedTransaction ? 'mr-96' : ''} flex flex-col h-screen overflow-hidden`}>
                 {/* Fixed Header */}
                 <div className="flex-shrink-0 bg-[#14181B] border-b border-slate-700/50">
                     <div className="max-w-7xl 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">

@@ -525,10 +525,10 @@ const Contacts = () => {
     const panelOpen = !!selectedContact;
 
     return (
-        <div className="min-h-screen bg-slate-900 text-white flex">
+        <div className="min-h-screen bg-slate-900 text-white flex flex-col md:flex-row">
             <Sidebar />
 
-            <div className={`flex-1 ml-64 transition-all duration-300 ${panelOpen ? 'mr-[420px]' : ''}`}>
+            <div className={`flex-1 md:ml-64 transition-all duration-300 ${panelOpen ? 'mr-[420px]' : ''}`}>
                 <div className="p-6 space-y-6">
 
                     {/* Header */}

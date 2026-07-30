@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import {
     Filter, Clock, RefreshCcw, X,
     ArrowUpRight, ArrowDownRight, BarChart2, AreaChart as AreaChartIcon, Calendar,
-    AlertCircle, Wallet
+    AlertCircle, Wallet, ChevronDown
 } from 'lucide-react';
 
 // Components
@@ -146,6 +146,8 @@ const RecentTransactions = ({ transactions }) => (
 
 // --- Wallet Balances Card ---
 const WalletBalances = ({ balances, usdRates, isLoading }) => {
+    const [isExpanded, setIsExpanded] = useState(false);
+
     const convertToUSD = (balance, currency) => {
         if (!usdRates || !usdRates.rates) return 0;
         const rate = usdRates.rates[currency];
@@ -172,62 +174,158 @@ const WalletBalances = ({ balances, usdRates, isLoading }) => {
     };
 
     return (
-        <Card>
-            <div className="flex items-center gap-2 mb-4">
-                <Wallet className="text-slate-400" size={20} />
-                <h3 className="font-bold text-white text-lg">Wallet Balances</h3>
+        <Card className="overflow-hidden">
+            <div className="md:hidden">
+                <div className="flex items-center justify-between mb-5">
+                    <div className="flex items-center gap-3">
+                        <div className="p-2.5 rounded-xl bg-gradient-to-br from-blue-600/20 to-violet-600/20 border border-blue-500/20">
+                            <Wallet className="text-blue-400" size={18} />
+                        </div>
+                        <div>
+                            <h3 className="font-semibold text-white text-lg">Wallet balances</h3>
+                            <p className="text-sm text-slate-400">Portfolio snapshot</p>
+                        </div>
+                    </div>
+                    <div className="hidden sm:flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1">
+                        <span className="h-2 w-2 rounded-full bg-emerald-400" />
+                        <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-300">Live</span>
+                    </div>
+                </div>
+
+                {isLoading ? (
+                    <div className="flex items-center justify-center py-8">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+                    </div>
+                ) : (
+                    <>
+                        {balances && balances.length > 0 ? (
+                            <div className="space-y-3">
+                                <div className="rounded-2xl border border-slate-700/60 bg-gradient-to-br from-slate-900/80 to-slate-800/60 p-4">
+                                    <div className="flex items-center justify-between mb-2">
+                                        <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-400">Total value</p>
+                                        <span className="rounded-full border border-blue-400/20 bg-blue-500/10 px-2.5 py-1 text-[11px] font-semibold text-blue-300">
+                                            USD
+                                        </span>
+                                    </div>
+                                    <p className="text-3xl font-semibold text-white">{formatUSD(getTotalInUSD())}</p>
+                                    <p className="mt-1 text-sm text-slate-400">
+                                        Combined across {balances.length} wallet{balances.length > 1 ? 's' : ''}
+                                    </p>
+                                </div>
+
+                                <button
+                                    type="button"
+                                    onClick={() => setIsExpanded((open) => !open)}
+                                    className="flex w-full items-center justify-between rounded-xl border border-slate-700/60 bg-slate-900/50 px-4 py-3 text-left"
+                                >
+                                    <div>
+                                        <p className="text-sm font-semibold text-white">Other balances</p>
+                                        <p className="text-xs text-slate-500">Tap to {isExpanded ? 'collapse' : 'expand'}</p>
+                                    </div>
+                                    <ChevronDown className={`text-slate-400 transition-transform ${isExpanded ? 'rotate-180' : ''}`} size={18} />
+                                </button>
+
+                                {isExpanded && (
+                                    <div className="grid gap-3">
+                                        {balances.map((wallet, index) => {
+                                            const usdAmount = convertToUSD(wallet.balance, wallet.currency);
+                                            return (
+                                                <div
+                                                    key={`${wallet.country}-${wallet.currency}-${index}`}
+                                                    className="rounded-xl border border-slate-700/60 bg-slate-900/50 p-4"
+                                                >
+                                                    <div className="flex items-center justify-between">
+                                                        <div>
+                                                            <p className="text-sm font-semibold text-white">{wallet.currency}</p>
+                                                            <p className="text-xs text-slate-500">{wallet.country || 'Wallet'}</p>
+                                                        </div>
+                                                        <span className="rounded-full bg-slate-800 px-2.5 py-1 text-[11px] font-medium text-slate-300">
+                                                            {formatUSD(usdAmount)}
+                                                        </span>
+                                                    </div>
+                                                    <div className="mt-3 flex items-end justify-between">
+                                                        <div>
+                                                            <p className="text-lg font-semibold text-slate-100">
+                                                                {parseFloat(wallet.balance).toLocaleString()}
+                                                            </p>
+                                                            <p className="text-xs text-slate-500">{wallet.currency}</p>
+                                                        </div>
+                                                        <div className="text-right">
+                                                            <p className="text-[11px] uppercase tracking-[0.24em] text-slate-500">Approx.</p>
+                                                            <p className="text-sm font-semibold text-slate-300">{formatUSD(usdAmount)}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                )}
+                            </div>
+                        ) : (
+                            <div className="rounded-2xl border border-dashed border-slate-700/60 bg-slate-900/40 p-8 text-center text-slate-500">
+                                <Wallet className="mx-auto mb-3 opacity-50" size={32} />
+                                <p className="text-sm font-medium text-slate-400">No wallet balances available</p>
+                            </div>
+                        )}
+                    </>
+                )}
             </div>
 
-            {isLoading ? (
-                <div className="flex items-center justify-center py-8">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+            <div className="hidden md:block">
+                <div className="flex items-center gap-2 mb-4">
+                    <Wallet className="text-slate-400" size={20} />
+                    <h3 className="font-bold text-white text-lg">Wallet Balances</h3>
                 </div>
-            ) : (
-                <>
-                    {balances && balances.length > 0 ? (
-                        <div className="flex items-center border border-slate-700/30 rounded-lg overflow-hidden">
-                            {/* Individual Wallets */}
-                            {balances.map((wallet, index) => {
-                                const usdAmount = convertToUSD(wallet.balance, wallet.currency);
-                                return (
-                                    <div
-                                        key={`${wallet.country}-${wallet.currency}-${index}`}
-                                        className="flex-1 px-4 py-3 border-r border-slate-700/50 last:border-r-0"
-                                    >
-                                        <div className="flex items-center gap-2 mb-1">
-                                            <span className="text-sm font-medium text-slate-400">{wallet.currency}</span>
-                                        </div>
-                                        <p className="text-white font-bold text-lg whitespace-nowrap">
-                                            {formatUSD(usdAmount)}
-                                        </p>
-                                        <p className="text-slate-500 text-xs">
-                                            {parseFloat(wallet.balance).toLocaleString()} {wallet.currency}
-                                        </p>
-                                    </div>
-                                );
-                            })}
 
-                            {/* Total */}
-                            <div className="flex-1 bg-gradient-to-br from-blue-600/20 to-violet-600/20 px-4 py-3">
-                                <div className="flex items-center gap-2 mb-1">
-                                    <span className="text-sm font-medium text-blue-400">TOTAL</span>
+                {isLoading ? (
+                    <div className="flex items-center justify-center py-8">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+                    </div>
+                ) : (
+                    <>
+                        {balances && balances.length > 0 ? (
+                            <div className="flex items-center border border-slate-700/30 rounded-lg overflow-hidden">
+                                {balances.map((wallet, index) => {
+                                    const usdAmount = convertToUSD(wallet.balance, wallet.currency);
+                                    return (
+                                        <div
+                                            key={`${wallet.country}-${wallet.currency}-${index}`}
+                                            className="flex-1 px-4 py-3 border-r border-slate-700/50 last:border-r-0"
+                                        >
+                                            <div className="flex items-center gap-2 mb-1">
+                                                <span className="text-sm font-medium text-slate-400">{wallet.currency}</span>
+                                            </div>
+                                            <p className="text-white font-bold text-lg whitespace-nowrap">
+                                                {formatUSD(usdAmount)}
+                                            </p>
+                                            <p className="text-slate-500 text-xs">
+                                                {parseFloat(wallet.balance).toLocaleString()} {wallet.currency}
+                                            </p>
+                                        </div>
+                                    );
+                                })}
+
+                                <div className="flex-1 bg-gradient-to-br from-blue-600/20 to-violet-600/20 px-4 py-3">
+                                    <div className="flex items-center gap-2 mb-1">
+                                        <span className="text-sm font-medium text-blue-400">TOTAL</span>
+                                    </div>
+                                    <p className="text-white font-bold text-xl whitespace-nowrap">
+                                        {formatUSD(getTotalInUSD())}
+                                    </p>
+                                    <p className="text-slate-400 text-xs">
+                                        All wallets combined
+                                    </p>
                                 </div>
-                                <p className="text-white font-bold text-xl whitespace-nowrap">
-                                    {formatUSD(getTotalInUSD())}
-                                </p>
-                                <p className="text-slate-400 text-xs">
-                                    All wallets combined
-                                </p>
                             </div>
-                        </div>
-                    ) : (
-                        <div className="text-center text-slate-500 py-8">
-                            <Wallet className="mx-auto mb-2 opacity-50" size={32} />
-                            <p>No wallet balances available</p>
-                        </div>
-                    )}
-                </>
-            )}
+                        ) : (
+                            <div className="text-center text-slate-500 py-8">
+                                <Wallet className="mx-auto mb-2 opacity-50" size={32} />
+                                <p>No wallet balances available</p>
+                            </div>
+                        )}
+                    </>
+                )}
+            </div>
         </Card>
     );
 };
@@ -461,7 +559,7 @@ export default function Dashboard() {
     const isLoadingMore = loading;
 
     return (
-        <div className="min-h-screen bg-[#14181B] pb-20 font-sans flex flex-row">
+        <div className="min-h-screen bg-[#14181B] pb-20 font-sans flex flex-col md:flex-row">
             {/* Background decoration */}
             <div className="fixed inset-0 overflow-hidden pointer-events-none">
             </div>
@@ -475,7 +573,7 @@ export default function Dashboard() {
             />
 
             {/* Main Content */}
-            <div className="w-full flex-1 transition-all duration-300 ml-64">
+            <div className="w-full flex-1 transition-all duration-300 md:ml-64">
                 {/* Modals */}
                 <RateModal
                     isOpen={showRateModal}
