@@ -1,7 +1,17 @@
 import { useState, useCallback, useRef } from 'react';
 
 const STORAGE_KEY = 'exchangeRates';
-const DEFAULT_RATES = { RWF: 1 };
+const DEFAULT_RATES = {
+    BIF: 0.25,
+    CDF: 0.5,
+    KES: 10,
+    KSH: 10.001,
+    RWF: 1.002,
+    UGX: 0.34,
+    USD: 1400,
+    XAF: 2.59,
+    ZMW: 45.46,
+};
 
 /**
  * Custom hook for managing exchange rates with localStorage persistence
@@ -41,7 +51,7 @@ export const useExchangeRates = () => {
             const next = { ...prev };
             currencies.forEach(c => {
                 if (!next[c]) {
-                    next[c] = c === 'RWF' ? 1 : 0;
+                    next[c] = DEFAULT_RATES[c] ?? (c === 'RWF' ? 1.002 : 0);
                 }
                 // Check if this currency needs a rate
                 if (c !== 'RWF' && (!next[c] || next[c] === 0)) {
