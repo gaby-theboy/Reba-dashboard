@@ -2,34 +2,45 @@ import { useState, useEffect } from 'react';
 import { Lock } from 'lucide-react';
 
 const SITE_PASSWORD = '07911';
-const STORAGE_KEY = 'reba_dashboard_authed';
 
 export default function PasswordGate({ children }) {
     const [authed, setAuthed] = useState(false);
-    const [checked, setChecked] = useState(false);
     const [input, setInput] = useState('');
     const [error, setError] = useState(false);
 
+    // Re-lock instantly whenever the screen turns off, the tab is
+    // hidden/backgrounded, or the window loses focus — not just on reload.
     useEffect(() => {
-        if (sessionStorage.getItem(STORAGE_KEY) === 'true') {
-            setAuthed(true);
-        }
-        setChecked(true);
+        const lock = () => setAuthed(false);
+
+        const handleVisibilityChange = () => {
+            if (document.hidden) lock();
+        };
+
+        // Device screen turning off / OS lock screen engaging / tab switch.
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+        // Belt-and-suspenders for browsers/devices that don't fire visibilitychange reliably.
+        window.addEventListener('pagehide', lock);
+        window.addEventListener('blur', lock);
+
+        return () => {
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+            window.removeEventListener('pagehide', lock);
+            window.removeEventListener('blur', lock);
+        };
     }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if (input === SITE_PASSWORD) {
-            sessionStorage.setItem(STORAGE_KEY, 'true');
             setAuthed(true);
             setError(false);
+            setInput('');
         } else {
             setError(true);
             setInput('');
         }
     };
-
-    if (!checked) return null;
 
     if (!authed) {
         return (
