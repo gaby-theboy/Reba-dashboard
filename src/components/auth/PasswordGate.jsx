@@ -8,10 +8,38 @@ export default function PasswordGate({ children }) {
     const [input, setInput] = useState('');
     const [error, setError] = useState(false);
 
+    // Restore auth state from sessionStorage so a page reload doesn't
+    // force the user to re-enter the password.
+    useEffect(() => {
+        try {
+            const saved = sessionStorage.getItem('reba_authed');
+            if (saved === 'true') setAuthed(true);
+        } catch (err) {
+            // ignore sessionStorage errors (e.g., privacy mode)
+        }
+    }, []);
+
+    // Persist auth state to sessionStorage whenever it changes.
+    useEffect(() => {
+        try {
+            if (authed) sessionStorage.setItem('reba_authed', 'true');
+            else sessionStorage.removeItem('reba_authed');
+        } catch (err) {
+            // ignore sessionStorage errors
+        }
+    }, [authed]);
+
     // Re-lock instantly whenever the screen turns off, the tab is
     // hidden/backgrounded, or the window loses focus — not just on reload.
     useEffect(() => {
-        const lock = () => setAuthed(false);
+        const lock = () => {
+            setAuthed(false);
+            try {
+                sessionStorage.removeItem('reba_authed');
+            } catch (err) {
+                // ignore
+            }
+        };
 
         const handleVisibilityChange = () => {
             if (document.hidden) lock();
